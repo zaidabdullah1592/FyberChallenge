@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Fyber Challenge</string>
+    <string name="application_id">Application ID</string>
+    <string name="user_id">User ID</string>
+    <string name="security_id">Security ID</string>
+    <string name="show_offers">Show Offers</string>
+</resources>
