@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fyberchallenge.R;
+import com.example.fyberchallenge.SharedPrefs;
 import com.example.fyberchallenge.Utils;
 import com.example.fyberchallenge.adapter.OffersListAdapter;
 import com.example.fyberchallenge.api.ApiInterface;
@@ -40,6 +41,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,6 +60,7 @@ public class HomeFragment extends Fragment {
     TextInputEditText user_id;
     TextInputEditText security_id;
     MyViewModel viewModel;
+    SharedPrefs prefs;
 
     public HomeFragment() {
     }
@@ -89,8 +92,8 @@ public class HomeFragment extends Fragment {
         security_id = view.findViewById(R.id.et_security_id);
         progressBar = view.findViewById(R.id.progress_circular);
         security_id.setText(Utils.token);
-
-        viewModel = ViewModelProviders.of((FragmentActivity) context).get(MyViewModel.class);;
+        prefs = new SharedPrefs(context);
+        viewModel = ViewModelProviders.of((FragmentActivity) context).get(MyViewModel.class);
         btn_offers.setOnClickListener(v -> {
             progressBar.setVisibility(View.VISIBLE);
             viewModel.getOffers(new OfferAPICallback() {
@@ -98,6 +101,9 @@ public class HomeFragment extends Fragment {
                 public void onSuccess(List<Offer> response) {
                     progressBar.setVisibility(View.INVISIBLE);
                     navController.navigate(R.id.action_homeFragment_to_listFragment);
+                    prefs.saveSharedPref("app_id", Objects.requireNonNull(application_id.getText()).toString());
+                    prefs.saveSharedPref("user_id", Objects.requireNonNull(user_id.getText()).toString());
+                    prefs.saveSharedPref("security_id", Objects.requireNonNull(security_id.getText()).toString());
                 }
 
                 @Override
